@@ -274,6 +274,7 @@ export function WorkspaceView({ rt }: { rt: WorkspaceRuntime }) {
     setSelected,
     setSelectedEdges,
     setSettingsCategory,
+    setSettingsModelKind,
     setSettingsOpen,
     setShowEdges,
     setSubjectImport,
@@ -284,6 +285,7 @@ export function WorkspaceView({ rt }: { rt: WorkspaceRuntime }) {
     setZoom,
     setZoomMenu,
     settingsCategory,
+    settingsModelKind,
     settingsOpen,
     showAssistant,
     showEdges,
@@ -1793,6 +1795,11 @@ export function WorkspaceView({ rt }: { rt: WorkspaceRuntime }) {
                 backendModels={backendCatalog.models}
                 onCheckModels={backendCatalog.refreshAvailability}
                 removeWatermark={backendCatalog.settings?.removeWatermark}
+                onConfigureModel={(kind) => {
+                  setSettingsCategory("models");
+                  setSettingsModelKind(kind);
+                  setSettingsOpen(true);
+                }}
               />
             )}
           </div>
@@ -2817,7 +2824,12 @@ export function WorkspaceView({ rt }: { rt: WorkspaceRuntime }) {
           catalog={backendCatalog}
           theme={theme}
           initialCategory={settingsCategory}
-          onClose={() => { dismissModelSetup(); setSettingsOpen(false); }}
+          initialModelKind={settingsModelKind}
+          onClose={() => {
+            dismissModelSetup();
+            setSettingsModelKind(null);
+            setSettingsOpen(false);
+          }}
         />
       )}
       {exampleEntries && (
